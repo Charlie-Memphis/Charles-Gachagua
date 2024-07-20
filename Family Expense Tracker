@@ -1,0 +1,61 @@
+import csv
+
+# Define the Expense class
+class Expense:
+    def __init__(self, date, category, amount):
+        self.date = date
+        self.category = category
+        self.amount = amount
+
+# Function to add an expense
+def add_expense():
+    date = input("Enter date (YYYY-MM-DD): ")
+    print("Expense Categories: food, rent, transport, entertainment, medical, school fees, savings")
+    category = input("Enter category: ")
+    amount = float(input("Enter amount: "))
+    expense = Expense(date, category, amount)
+    
+    with open('family_expenses.csv', 'a', newline='') as file:
+        writer = csv.writer(file)
+        writer.writerow([expense.date, expense.category, expense.amount])
+    
+    print("Expense added successfully!")
+
+# Function to view expenses
+def view_expenses():
+    try:
+        with open('family_expenses.csv', 'r') as file:
+            reader = csv.reader(file)
+            print("\nDate       | Category       | Amount")
+            print("--------------------------------------")
+            for row in reader:
+                print(f"{row[0]} | {row[1]}    | ${row[2]}")
+    except FileNotFoundError:
+        print("No expenses found. Please add an expense first.")
+
+# Function to display the menu
+def display_menu():
+    print("\nFamily Expense Tracker")
+    print("1. Add Expense")
+    print("2. View Expenses")
+    print("3. Exit")
+
+# Main function to run the Expense Tracker
+def main():
+    while True:
+        display_menu()
+        choice = input("Enter your choice: ")
+        
+        if choice == '1':
+            add_expense()
+        elif choice == '2':
+            view_expenses()
+        elif choice == '3':
+            print("Exiting Expense Tracker. Goodbye!")
+            break
+        else:
+            print("Invalid choice. Please try again.")
+
+if __name__ == "__main__":
+    main()
+    
